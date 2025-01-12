@@ -18,11 +18,11 @@ const configOptions = {
 
 const defaultConfig = {
   "plain": true,
-  "polite": true,
+  "polite": false,
   "negative": true,
   "past": true,
   "te-form": false,
-  "progressive": false,
+  "progressive": true,
   "potential": false,
   "imperative": false,
   "passive": false,
@@ -332,7 +332,7 @@ function generateQuestion() {
   var questionText = {
     "affirmative": "<span class='first'>make</span> the following <span class='emphasis'>affirmative</span>",
     "negative": "<span class='first'>make</span> the following <span class='emphasis'>negative</span>",
-    "present": "<span class='first'>convert</span> the following to the <span class='emphasis'>present tense</span>",
+    "present": "<span class='first'>convert</span> the following to the <span class='emphasis'>non-past tense</span>",
     "past": "<span class='first'>convert</span> the following to the <span class='emphasis'>past tense</span>",
     "plain": "<span class='first'>make</span> the following <span class='emphasis'>informal</span>",
     "polite": "<span class='first'>make</span> the following <span class='emphasis'>polite</span>",

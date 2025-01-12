@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<h3>The Verb is</h3>
+<h1 id="theVerb" style="display: none">会う</h1>
+<h1 id="furiganaVerb">会う</h1>
+<h3>The desired form is</h3>
+<h1 id="theForm">て</h1>
+<form action="javascript:void(0);" onsubmit="handleSubmit()">
+    <input type="text" id="guess" name="name" required>
+    <button type="submit">
+        Submit
+    </button>
+</form>
+<script>
+    function wordWithFurigana(words) {
+        if (words.constructor !== Array) {
+            words = [words];
+        }
+
+        return words.map(function (word) {
+            var bits = word.split(/(.)\[([^\]]*)\]/);
+            while (bits.length > 1) {
+                bits[0] = bits[0] + "<ruby>" + bits[1] + "<rp>(</rp><rt>" + bits[2] + "</rt><rp>)</rp></ruby>" + bits[3];
+                bits.splice(1, 3);
+            }
+            return bits[0];
+        });
+    }
+
+    function rollVerb() {
+        var words = {
+            "走る": {"group": "godan", "dictionary": "走[はし]る",},
+            "死ぬ": {"group": "godan", "dictionary": "死[し]ぬ",},
+            "上る": {"group": "godan", "dictionary": "上[のぼ]る",},
+            "聞く": {"group": "godan", "dictionary": "聞[き]く",},
+            "書く": {"group": "godan", "dictionary": "書[か]く",},
+            "消す": {"group": "godan", "dictionary": "消[け]す",},
+            "遊ぶ": {"group": "godan", "dictionary": "遊[あそ]ぶ",},
+            "学ぶ": {"group": "godan", "dictionary": "学[まな]ぶ",},
+            "喜ぶ": {"group": "godan", "dictionary": "喜[よろこ]ぶ",},
+            "泳ぐ": {"group": "godan", "dictionary": "泳[およ]ぐ",},
+            "注ぐ": {"group": "godan", "dictionary": "注[そそ]ぐ",},
+            "急ぐ": {"group": "godan", "dictionary": "急[いそ]ぐ",},
+            "立つ": {"group": "godan", "dictionary": "立[た]つ",},
+            "持つ": {"group": "godan", "dictionary": "持[も]つ",},
+            "打つ": {"group": "godan", "dictionary": "打[う]つ",},
+            "飲む": {"group": "godan", "dictionary": "飲[の]む",},
+            "作る": {"group": "godan", "dictionary": "作[つく]る",},
+            "買い戻す": {"group": "godan", "dictionary": "買[か]い戻[もど]す",},
+            "読む": {"group": "godan", "dictionary": "読[よ]む",},
+            "思う": {"group": "godan", "dictionary": "思[おも]う",},
+            "座る": {"group": "godan", "dictionary": "座[すわ]る",},
+            "休む": {"group": "godan", "dictionary": "休[やす]む",},
+            "足す": {"group": "godan", "dictionary": "足[た]す",},
+            "歌う": {"group": "godan", "dictionary": "歌[うた]う",},
+            "買う": {"group": "godan", "dictionary": "買[か]う",},
+
+            "上げる": {"group": "ichidan", "dictionary": "上[あ]げる",},
+            "着る": {"group": "ichidan", "dictionary": "着[き]る",},
+            "育てる": {"group": "ichidan", "dictionary": "育[そだ]てる",},
+            "褒める": {"group": "ichidan", "dictionary": "褒[ほ]める",},
+            "出る": {"group": "ichidan", "dictionary": "出[で]る",},
+            "食べる": {"group": "ichidan", "dictionary": "食[た]べる",},
+            "起きる": {"group": "ichidan", "dictionary": "起[お]きる",},
+            "買い換える": {"group": "ichidan", "dictionary": "買[か]い換[か]える",},
+            "買い与える": {"group": "ichidan", "dictionary": "買[か]い与[あた]える",},
+
+            // "行く":       { "group": "iku",          "dictionary": "行[い]く", },
+            //
+            // "する":       { "group": "suru",         "dictionary": "する", },
+            // "勉強する":   { "group": "suru",         "dictionary": "勉[べん]強[きょう]する", },
+            // "電話する":   { "group": "suru",         "dictionary": "電[でん]話[わ]する", },
+            // "開発する":   { "group": "suru",         "dictionary": "開[かい]発[はつ]する", },
+            // "計算する":   { "group": "suru",         "dictionary": "計[けい]算[さん]する", },
+            //
+            // "来る":       { "group": "kuru",         "dictionary": "来[く]る", },
+            //
+            // "高い":       { "group": "i-adjective",  "dictionary": "高[たか]い", },
+            // "面白い":     { "group": "i-adjective",  "dictionary": "面[おも]白[しろ]い", },
+            // "暗い":       { "group": "i-adjective",  "dictionary": "暗[くら]い", },
+            // "暖かい":     { "group": "i-adjective",  "dictionary": "暖[あたた]かい", },
+            // "華々しい":   { "group": "i-adjective",  "dictionary": "華[はな]々[ばな]しい", },
+            // "怖い":       { "group": "i-adjective",  "dictionary": "怖[こわ]い", },
+            // "硬い":       { "group": "i-adjective",  "dictionary": "硬[かた]い", },
+            //
+            // "いい":       { "group": "ii",           "dictionary": "いい", },
+            //
+            // "有名":       { "group": "na-adjective", "dictionary": "有[ゆう]名[めい]だ", },
+            // "好き":       { "group": "na-adjective", "dictionary": "好[す]きだ", },
+            // "元気":       { "group": "na-adjective", "dictionary": "元[げん]気[き]だ", },
+            // "意地悪":     { "group": "na-adjective", "dictionary": "意[い]地[じ]悪[わる]だ", },
+            // "静":         { "group": "na-adjective", "dictionary": "静[しず]かだ", },
+            // "便利":       { "group": "na-adjective", "dictionary": "便[べん]利[り]だ", },
+            // "上手":       { "group": "na-adjective", "dictionary": "上[じょう]手[ず]だ", },
+            // "幸い":       { "group": "na-adjective", "dictionary": "幸[さいわ]いだ", },
+        };
+        const randomVerb = Object.keys(words)[Math.floor(Math.random() * Object.keys(words).length)];
+        const furiganaVerb = words[randomVerb].dictionary;
+        const verbElement = document.getElementById('theVerb');
+        const furiganaElement = document.getElementById('furiganaVerb');
+        verbElement.innerText = randomVerb;
+        furiganaElement.innerHTML = wordWithFurigana(furiganaVerb);
+        console.log(randomVerb);
+    }
+
+    function rollForm() {
+        const forms = [
+            "て",
+            "negative",
+            "continous present",
+            "past",
+            "continuous past",
+            "negative continuous present",
+            "negative past",
+            "negative continuous past",
+        ]
+        const formElement = document.getElementById('theForm');
+        const form = forms[Math.floor(Math.random() * forms.length)];
+        formElement.innerText = form;
+        console.log(form);
+    }
+
+    function handleSubmit() {
+        const guess = document.getElementById('guess').value;
+        const verbElement = document.getElementById('theVerb').innerText;
+        const formElement = document.getElementById('theForm').innerText;
+        //const query = "For the Japanese verb " + verbElement + ", I have created the " + formElement + "form: " + guess + ". Did I do it correctly, or did I make a mistake?";
+        const query = "I have conjugated the verb " + verbElement + ". " + " Is " + guess + " the " + formElement + " form of the verb " + verbElement + "? Before you say yes or no, please repeat what I say, and think carefully about whether it's correct. If there is another verb that happens to behave the exact same, that is not relevant for this discussion.";
+        console.log(query);
+        let url = 'https://chat.openai.com/?q=' + encodeURIComponent(query);
+        // const frame = document.getElementById('theframe');
+        // frame.src = url;
+        window.open(url, '_blank');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        rollVerb();
+        rollForm();
+    });
+</script>
+<!--<iframe id="theframe" width="800" height="800">-->
+
+<!--</iframe>-->
+</body>
+</html>
